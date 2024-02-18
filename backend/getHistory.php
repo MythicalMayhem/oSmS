@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $id = $data['id'];
 
 function getRecent($con, $id ) {
-    $query = "SELECT * from history".$id." limit 25 ";
+    $query = "SELECT * from history".$id." order by id desc limit 25 ";
     $result = mysqli_query($con, $query) or die("". mysqli_error($con));
     $rows = array();
     while ($r = mysqli_fetch_array($result)) {
