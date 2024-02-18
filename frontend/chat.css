@@ -1,0 +1,100 @@
+body,
+html {
+	height: 99%;
+	width: 99%;
+	font-family: sans-serif;
+}
+*{
+    padding: 5px;
+}
+::-webkit-scrollbar {
+	width: 0;
+}
+body {
+	background-color: #202020;
+	color: white;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.main {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 80%;
+	height: 80%;
+    justify-content: center;
+    align-items: stretch;
+	min-width: 300px;
+}
+.chats,
+.current {
+	display: flex;
+	flex-direction: column;
+	border: 3px solid white;
+}
+
+/*saved convos*/
+.chats {
+	width: 29%;
+	font-size: larger;
+}
+.add::before {
+	content: "add convo";
+	display: flex;
+	flex-direction: column;
+}
+#addid {
+	width: 100%;
+}
+.head {
+	min-width: none;
+    border-top: 1px solid gray;
+}
+/*-*/
+
+/*currently open convo*/
+.current {
+	width:50%;
+	min-height: 500px;
+}
+
+/*chat history*/
+.history {
+	height: 100%;
+	display: flex;
+	flex-direction: column-reverse;
+}
+.sent,.received{
+    font-size: x-large;
+    border-radius: 20px ;
+    padding: 5px 10px;
+    margin: 15px 0;
+}
+.received {
+    align-self: flex-start;
+    background-color:black;
+    color: white;
+    border-bottom-left-radius: 0;
+}
+.sent {
+    border-bottom-right-radius: 0;
+	align-self: flex-end; 
+    background: white;
+    color: black;
+}
+/*-*/
+
+/*input area*/
+.input {
+	display: flex;
+	flex-direction: row;
+}
+.area {
+	width: 79%;
+}
+.send {
+	width: 19%;
+}
+/*-*/

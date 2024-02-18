@@ -23,7 +23,7 @@ function deleteCookie(name) {
 function login() {
     let uiser = document.getElementById('luid').value.trim()
     let pw = document.getElementById('lpw').value.trim()
-    let content = { 'type': 'login', 'userid': String(uiser), 'pw': String(pw)}
+    let content = { 'type': 'login', 'userid': String(uiser), 'pw': String(pw) }
 
     fetch("../backend/auth.php", {
         "method": "POST",
