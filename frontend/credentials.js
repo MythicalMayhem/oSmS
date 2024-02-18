@@ -73,7 +73,7 @@ function signup() {
             alert('server error(duplicate)  ' + params)
         } else if (params == 200) {
             alert('success  ' + params)
-            setCookie('userid', uiser, 10000)
+            setCookie('userid', uiser, 10000000)
         } else {
             alert('unknown error ' + params)
         }

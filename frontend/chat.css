@@ -1,15 +1,13 @@
 body,
 html {
-	height: 99%;
+	height: 98%;
 	width: 99%;
 	font-family: sans-serif;
 }
-*{
-    padding: 5px;
+* {
+	padding: 5px;
 }
-::-webkit-scrollbar {
-	width: 0;
-}
+
 body {
 	background-color: #202020;
 	color: white;
@@ -24,8 +22,8 @@ body {
 	flex-wrap: nowrap;
 	width: 80%;
 	height: 80%;
-    justify-content: center;
-    align-items: stretch;
+	justify-content: center;
+	align-items: stretch;
 	min-width: 300px;
 }
 .chats,
@@ -39,6 +37,12 @@ body {
 .chats {
 	width: 29%;
 	font-size: larger;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+.add{
+	width: 95%;
+	border-bottom: 1px solid gray;
 }
 .add::before {
 	content: "add convo";
@@ -48,41 +52,58 @@ body {
 #addid {
 	width: 100%;
 }
-.head {
-	min-width: none;
-    border-top: 1px solid gray;
+.heads {
+	min-width: none; 
 }
+button[class="name"] {
+	background-color: #202020;
+	font-size: xx-large;
+	color: white;
+	border: none;
+	border-bottom: 1px solid gray;
+	margin: 2px 0;
+
+}
+
 /*-*/
 
 /*currently open convo*/
 .current {
-	width:50%;
+	width: 50%;
 	min-height: 500px;
 }
 
 /*chat history*/
+.header {
+	background-color: #151515;
+}
+.receip {
+	font-size: x-large; 
+	padding: 15px 5px;
+}
 .history {
 	height: 100%;
 	display: flex;
 	flex-direction: column-reverse;
 }
-.sent,.received{
-    font-size: x-large;
-    border-radius: 20px ;
-    padding: 5px 10px;
-    margin: 15px 0;
+.sent,
+.received {
+	font-size: x-large;
+	border-radius: 20px;
+	padding: 5px 10px;
+	margin: 15px 0;
 }
 .received {
-    align-self: flex-start;
-    background-color:black;
-    color: white;
-    border-bottom-left-radius: 0;
+	align-self: flex-start;
+	background-color: black;
+	color: white;
+	border-bottom-left-radius: 0;
 }
 .sent {
-    border-bottom-right-radius: 0;
-	align-self: flex-end; 
-    background: white;
-    color: black;
+	border-bottom-right-radius: 0;
+	align-self: flex-end;
+	background: white;
+	color: black;
 }
 /*-*/
 

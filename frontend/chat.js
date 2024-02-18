@@ -9,43 +9,60 @@ function getCookie(cName) {
     return res;
 }
 
-async function getHistory(params) {
+function populateConvos(data) {
+    let arr = data.split(',')
+    let container = document.getElementById('heads')
+    while (container.firstChild) { container.removeChild(container.lastChild); }
+
+    for (let i = 1; i < arr.length; i++) {
+        let breaker = document.createElement('br')
+        let button = document.createElement('button')
+        button.className = 'name'
+        button.innerText = arr[i]
+        container.appendChild(button)
+        container.appendChild(breaker)
+    }
+}
+
+
+async function loadConvoHistory(params) {
     let content = { "id": params }
     return fetch("../backend/getHistory.php", {
         "method": "POST",
         "headers": { "Content-Type": "application/json;charset=utf-8" },
         "body": JSON.stringify(content)
-    }).then(function (res) { return res.json() })
+    })
+        .then((res) => { return res.json() })
+        .then((params) => { console.log((params)) })
 }
 
-async function getConvos() {
-    log(10)
+async function loadConvos() {
     let content = { "id": getCookie('userid') }
-    return fetch("../backend/getHistory.php", {
+    return fetch("../backend/getConvos.php", {
         "method": "POST",
         "headers": { "Content-Type": "application/json;charset=utf-8" },
         "body": JSON.stringify(content)
-    }).then(function (res) { return console.log(res.json()) })
+    })
+        .then((res) => { return (res.json()) })
+        .then((params) => { populateConvos(params['content']) })
 }
 function addConvo() {
     let receip = document.getElementById('addid').value
     let sendr = getCookie('userid')
     console.log(document.cookie)
     if (sendr.length < 1) { return alert('token expired login again') }
+    let content = { "fid": receip, "client": sendr }
 
-    let content = {
-        "fid": receip,
-        "client": sendr
-    }
     fetch("../backend/addfriend.php", {
         "method": "POST",
         "headers": { "Content-Type": "application/json;charset=utf-8" },
         "body": JSON.stringify(content)
-    }).then(function (res) { console.log(res); return (res.json()) })
+    })
+        .then(function (res) { console.log(res); return (res.json()) })
         .then(function (params) {
-            console.log(1)
             if (params != 202) { alert(params['comment']) }
-            else { console.log(getHistory(params["content"])) }
+            else { console.log((params["content"])) }
         })
 }
 document.getElementById('add').addEventListener('click', addConvo)
+loadConvos()
