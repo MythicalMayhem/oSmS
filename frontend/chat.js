@@ -18,12 +18,18 @@ function populateConvos(data) {
         let breaker = document.createElement('br')
         let button = document.createElement('button')
         button.className = 'name'
+        button.id = arr[i]
         button.innerText = arr[i]
+        button.addEventListener('click',populateHistory)
         container.appendChild(button)
         container.appendChild(breaker)
     }
 }
-
+function populateHistory(that,ev) {
+    console.log(that)
+    let receip = that.srcElement.id
+    document.querySelector('.receip').innerText = receip
+}
 
 async function loadConvoHistory(params) {
     let content = { "id": params }
@@ -65,4 +71,5 @@ function addConvo() {
         })
 }
 document.getElementById('add').addEventListener('click', addConvo)
+
 loadConvos()
