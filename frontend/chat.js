@@ -95,10 +95,11 @@ async function populateHistory(params) {
     }
 }
 
-async function loadConvoHistory(that) {
-    let temp = that.srcElement.id
+async function loadConvoHistory(that, c = currentConvo) {
+    if (!(c || that.srcElement.id)) { return }
+    let temp = (that.srcElement.id) || (c)
     let content = { "id": temp }
-    return fetch("../backend/getHistory.php", {
+    fetch("../backend/getHistory.php", {
         "method": "POST",
         "headers": { "Content-Type": "application/json;charset=utf-8" },
         "body": JSON.stringify(content)
@@ -107,7 +108,7 @@ async function loadConvoHistory(that) {
         .then((params) => {
             currentConvo = that.srcElement.id
             populateHistory(params)
-        })
+        }).then(() => { setTimeout(() => { loadConvoHistory(currentConvo) }, "2500") })
 }
 
 async function loadConvos() {
@@ -119,6 +120,7 @@ async function loadConvos() {
     })
         .then((res) => { return (res.json()) })
         .then((params) => { populateConvos(params['content']) })
+
 }
 
 async function sendMsg() {
@@ -161,5 +163,3 @@ async function addConvo() {
 }
 document.getElementById('add').addEventListener('click', addConvo)
 document.getElementById('send').addEventListener('click', sendMsg)
-
-loadConvos()
