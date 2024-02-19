@@ -10,11 +10,16 @@ $con = mysqli_connect("localhost", "root", "") or death($con);
 mysqli_select_db($con, "osms") or death($con);
 $data = json_decode(file_get_contents('php://input'), true);
 
-$fid = $data['fid'];
-$client = $data['client'];
+$fidn = $data['fid'];
+$clientn = $data['client'];
 
 
-$userexists = mysqli_query($con, "SELECT * from users where userid='$fid'") or death($con);
+$userexists = mysqli_query($con, "SELECT * from users where username='$fidn'") or death($con);
+
+$client = mysqli_fetch_array(mysqli_query($con, "SELECT userid from users where username='$clientn'"))[0];
+$fid    = mysqli_fetch_array(mysqli_query($con, "SELECT userid from users where username='$fidn'"))[0];
+
+
 /*
 mysqli_query($con,"delete from convo") or death($con);   
 mysqli_query($con,"update users set convos=''") or death($con);   
@@ -27,7 +32,7 @@ if (mysqli_num_rows($userexists) != 0) {
     $tableexists = mysqli_query($con, "SELECT convoid FROM convo WHERE convoid = '" . ($fid . 'x' . $client) . "' OR convoid = '" . ($client . 'x' . $fid) . "'") or death($con);
     $t = ($client . 'x' . $fid);
     if (mysqli_num_rows($tableexists) == 0) {
-        $createNewConvo = "INSERT INTO `convo`(`convoid`, `name`, `members`, `admins`, `theme`) VALUES ('" . ($client . 'x' . $fid) . "','" . ($client . ' and ' . $fid) . "','" . ($client . ',' . $fid) . "','','default')";
+        $createNewConvo = "INSERT INTO `convo`(`convoid`, `name`, `members`, `admins`, `theme`) VALUES ('" . ($client . 'x' . $fid) . "','" . ($clientn . ' and ' . $fidn) . "','" . ($client . ',' . $fid) . "','','default')";
         mysqli_query($con, $createNewConvo) or death($con);
 
         $createHistory =  "CREATE TABLE history" . $t . "(id int AUTO_INCREMENT PRIMARY KEY,userid varchar(100),content varchar(500),sentdate date)";
@@ -36,17 +41,17 @@ if (mysqli_num_rows($userexists) != 0) {
         $updateConvos = "UPDATE users set convos= CONCAT(',$t',(SELECT convos from users WHERE userid='$client')) WHERE userid='$client';  ";
         mysqli_query($con, $updateConvos) or death($con);
 
-
+ 
         echo json_encode(array(
             "code" => 202,
             "comment" => "validated",
-            "content" => $t,
+            "content" => ($clientn . 'x' . $fidn),
         ));
     } else {
         $total = mysqli_query($con, "SELECT convos from users where userid='$client'") or death($con);
-        $total=mysqli_fetch_array($total)[0];
+        $total = mysqli_fetch_array($total)[0];
         $convoid = mysqli_fetch_array($tableexists)[0];
-        if ((!(strpos($total, $convoid)))==1) {
+        if ((!(strpos($total, $convoid))) == 1) {
             $updateConvos = "UPDATE users set convos= CONCAT(',$convoid',(SELECT convos from users WHERE userid='$client')) WHERE userid='$client'";
             mysqli_query($con, $updateConvos) or death($con, 'asdf');
         }

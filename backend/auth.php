@@ -1,40 +1,65 @@
 <?php
 $data = json_decode(file_get_contents('php://input'), true);
 $type = $data['type'];
-if ($type == 'login') {
-    $userid = $data['userid'];
-    $pw = $data['pw'];
+$con = mysqli_connect('localhost', 'root', '') or death('erreur connection' . mysqli_connect_error());
+mysqli_select_db($con, 'osms') or death('selection error');
 
-    $con = mysqli_connect('localhost', 'root', '') or die('erreur connection' . mysqli_connect_error());
-    mysqli_select_db($con, 'osms') or die('selection error');
-    $req = "SELECT userid,pw from users where userid='$userid' and pw='$pw' ";
-    $res = mysqli_query($con, $req) or die(mysqli_error($con));
-    if (mysqli_num_rows($res) == 1) {
-        echo 200;
-    } elseif (mysqli_num_rows($res) > 1) {
-        echo mysqli_error($con);
-    } elseif (mysqli_num_rows($res) == 0) {
-        echo 420;
-    }
-} elseif ($data['type'] == 'signup') {
-    $userid = $data['userid'];
+function death($con, $line = '')
+{
+    die(json_encode(array("code" => 450, "comment" => $line . strval(mysqli_error($con)))));
+}
+
+if ($type == 'login') {
     $username = $data['username'];
     $pw = $data['pw'];
-    $con = mysqli_connect('localhost', 'root', '') or die('erreur connection' . mysqli_connect_error());
-    mysqli_select_db($con, 'osms') or die('selection error');
-    $req = "SELECT userid from users where userid='$userid' ";
-    $res = mysqli_query($con, $req) or die(mysqli_error($con));
+
+    $req = "SELECT username,pw from users where username='$username' and pw='$pw' ";
+    $res = mysqli_query($con, $req) or death(mysqli_error($con));
     if (mysqli_num_rows($res) == 1) {
-        echo 420;
-    } elseif (mysqli_num_rows($res) > 1) {
-        echo mysqli_error($con);
+        echo json_encode(array(
+            "code" => 200,
+            "comment" => "validated",
+        ));
     } elseif (mysqli_num_rows($res) == 0) {
-        $req = "INSERT INTO `users`(`userid`, `username`, `pw`, `convos`) VALUES ('$userid','$username','$pw','')";
-        $res = mysqli_query($con, $req) or die(mysqli_error($con));
+        echo json_encode(array(
+            "code" => 420,
+            "comment" => "incorrect credentials",
+        ));
+    } else {
+        echo json_encode(array(
+            "code" => 530,
+            "comment" => mysqli_error($con),
+        ));
+    }
+} elseif ($data['type'] == 'signup') {
+    $username = $data['username'];
+    $pw = $data['pw'];
+
+    $req = "SELECT username from users where username='$username' ";
+    $res = mysqli_query($con, $req) or death(mysqli_error($con));
+    if (mysqli_num_rows($res) == 1) {
+        echo json_encode(array(
+            "code" => 530,
+            "comment" => "user already exists",
+        ));
+    } else if (mysqli_num_rows($res) == 0) {
+        $req = "INSERT INTO `users`(`username`, `pw`, `convos`) VALUES ('$username','$pw','')";
+        $res = mysqli_query($con, $req) or death(mysqli_error($con));
         if (mysqli_affected_rows($con) > 0) {
-            echo 200;
+            echo json_encode(array(
+                "code" => 200,
+                "comment" => "authenticated",
+            ));;
         } else {
-            echo mysqli_error($con);
+            echo json_encode(array(
+                "code" => 530,
+                "comment" => mysqli_error($con),
+            ));
         }
+    } else {
+        echo json_encode(array(
+            "code" => 530,
+            "comment" => mysqli_error($con),
+        ));
     }
 }

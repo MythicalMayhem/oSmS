@@ -7,16 +7,22 @@ html {
 * {
 	padding: 5px;
 }
-::-webkit-scrollbar{
+::-webkit-scrollbar {
 	width: 0;
 }
 body {
 	background-color: #202020;
 	color: white;
 	display: flex;
-	flex-direction: row;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
+}
+nav a,footer a {
+	color: white;
+}
+nav {
+	align-self: flex-start;
 }
 .main {
 	display: flex;
@@ -43,7 +49,7 @@ body {
 	justify-content: flex-start;
 	align-items: flex-end;
 }
-.add{
+.add {
 	width: 95%;
 	border-bottom: 1px solid gray;
 }
@@ -56,16 +62,15 @@ body {
 	width: 100%;
 }
 .heads {
-	min-width: none; 
+	min-width: none;
 }
 button[class="name"] {
 	background-color: #202020;
-	font-size: xx-large;
+	font-size: larger;
 	color: white;
 	border: none;
 	border-bottom: 1px solid gray;
 	margin: 2px 0;
-
 }
 
 /*-*/
@@ -81,11 +86,11 @@ button[class="name"] {
 	background-color: #151515;
 }
 .receip {
-	font-size: x-large; 
+	font-size: x-large;
 	padding: 15px 5px;
 }
 .history {
-	height: 500px;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	overflow: scroll;
@@ -94,22 +99,22 @@ button[class="name"] {
 .received {
 	font-size: x-large;
 	border-radius: 20px;
-	padding: 5px 10px; 
+	padding: 5px 10px;
 }
 .received {
 	align-self: flex-start;
-	background-color: black;
 	color: white;
+	background-color: black;
 	border-bottom-left-radius: 0;
 }
 .sent {
-	border-bottom-right-radius: 0;
 	align-self: flex-end;
-	background: white;
 	color: black;
+	background: white;
+	border-bottom-right-radius: 0;
 }
 .date {
-	font-size: x-small;	
+	font-size: x-small;
 }
 /*-*/
 
@@ -125,3 +130,6 @@ button[class="name"] {
 	width: 19%;
 }
 /*-*/
+button {
+	cursor: pointer;
+}

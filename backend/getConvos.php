@@ -6,8 +6,12 @@ $data = json_decode(file_get_contents('php://input'), true);
 $id = $data['id'];
 
 function death($con){die(json_encode(array("code" => 450, "comment" => strval(mysqli_error($con)))));}
- 
-$result = mysqli_query($con, "SELECT convos from users where userid='$id' ") or death($con);
+
+function convoName($con,$id){
+    return mysqli_query($con,"SELECT name from convo where convoid=$id") or death($con);
+}
+
+$result = mysqli_query($con, "SELECT convos from users where username='$id' ") or death($con);
 
 
 echo json_encode(array(

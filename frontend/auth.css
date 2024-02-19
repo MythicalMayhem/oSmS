@@ -1,0 +1,71 @@
+body,
+html {
+	height: 98%;
+	width: 99%;
+	font-family: sans-serif;
+}
+* {
+	padding: 5px;
+}
+::-webkit-scrollbar{
+	width: 0;
+}
+body {
+	background-color: #202020;
+	color: white;
+	font-family: sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+h2,
+h1 {
+	width: fit-content;
+	margin: 0;
+	display: inline;
+
+}
+fieldset {
+	width: fit-content;
+	padding: 1cm;
+	min-width: 300px;
+	width: 40%;
+	border-width: 5px;
+	border-style: dashed;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	border: 3px solid white;
+}
+ 
+
+input {
+	width: 6.2cm;
+	height: 1.2cm;
+	border: none;
+	background-color: #202020;
+	border-bottom: 3px solid white;
+	color: white;
+}
+div { 
+	width: 95%;
+	display: flex;
+	justify-content: center;
+	align-items: last flex-end;
+	flex-wrap: wrap;
+}
+.main {
+	align-items: stretch;
+}
+.submit {
+	background-color: #202020;
+	color: white;
+	text-decoration: underline;
+	height: 1cm;
+	border: none; 
+	align-self: flex-end;
+	justify-self: flex-end;
+	cursor: pointer;
+}

@@ -1,3 +1,4 @@
+document.cookie=''
 function setCookie(cName, cValue, time) {
     let date = new Date();
     date.setTime(date.getTime() + (time * 1000));
@@ -21,9 +22,9 @@ function deleteCookie(name) {
 }
 
 function login() {
-    let uiser = document.getElementById('luid').value.trim()
+    let username = document.getElementById('luid').value.trim()
     let pw = document.getElementById('lpw').value.trim()
-    let content = { 'type': 'login', 'userid': String(uiser), 'pw': String(pw) }
+    let content = { 'type': 'login', 'username': String(username), 'pw': String(pw) }
 
     fetch("../backend/auth.php", {
         "method": "POST",
@@ -32,29 +33,23 @@ function login() {
         },
         "body": JSON.stringify(content)
     }).then(function (res) {
-        return res.text()
+        return res.json()
     }).then(function (params) {
-        if (params == 420) {
-            alert('credentials are wrong    ' + params)
-        } else if (params == 520) {
-            alert('server error     ' + params)
-        } else if (params == 200) {
-            alert('authenticated    ' + params)
-            setCookie('userid', uiser, 10000)
+        if (params['code'] == 200) { 
+            setCookie('userid', username, 10000000)
+            window.location.href = 'chat.html'
         } else {
-            alert('unknown error ' + params)
-
+            alert(params['comment'])
         }
     })
     console.log(document.cookie)
 }
-function signup() {
-    let uid = document.getElementById('suid').value.trim()
+
+function signup() { 
     let username = document.getElementById('sname').value.trim()
     let pw = document.getElementById('spw').value.trim()
     content = {
-        'type': 'signup',
-        'userid': String(uid),
+        'type': 'signup', 
         'username': String(username),
         'pw': String(pw),
     }
@@ -65,17 +60,13 @@ function signup() {
         },
         "body": JSON.stringify(content)
     }).then(function (res) {
-        return res.text()
-    }).then(function (params) {
-        if (params == 420) {
-            alert('user exists already  ' + params)
-        } else if ((params == 520) || (params == 530)) {
-            alert('server error(duplicate)  ' + params)
-        } else if (params == 200) {
-            alert('success  ' + params)
-            setCookie('userid', uiser, 10000000)
+        return res.json()
+    }).then(function (params) { 
+        if (params['code'] == 200) { 
+            setCookie('userid', username, 10000000)
+            window.location.href = 'chat.html'
         } else {
-            alert('unknown error ' + params)
+            alert(params['comment'])
         }
     })
     console.log(document.cookie)
